@@ -1,0 +1,157 @@
+SELECT * FROM PRACOWNICY
+--------------------------------
+SELECT  id,
+	nazwisko,
+	imie,
+	pesel
+  FROM  pracownicy
+ WHERE  nazwisko = 'Nowak';
+---------------------------------
+SELECT  id,
+ 	last_name,
+ 	first_name,
+ 	salary,
+ 	birth_date
+  FROM	emp 
+ WHERE 	last_name = 'Stallone';
+-----------------------------------
+SELECT  id,
+	name
+FROM    customer
+WHERE 	name LIKE '%good%'
+AND	country = 'USA'
+AND 	contact_id IS NULL;
+----------------------------------
+SELECT  id,
+	last_name,
+	first_name,
+	city,
+	country
+FROM emp
+WHERE
+----------------------------------
+SELECT  id,
+	name,
+        suggested_price
+FROM product
+WHERE name LIKE '%air%'
+AND suggested_price IS NULL;
+---------------------------------
+SELECT  id,
+	name,
+        suggested_price
+FROM product
+WHERE name LIKE '%air%'
+AND suggested_price >= 1000
+AND suggested_price <= 2000; 
+(LUB AND suggested_price BETWEEN 1000 AND 2000)
+---------------------------------
+SELECT  id,
+	name,
+        suggested_price
+FROM product
+WHERE name LIKE '%air%'
+AND (suggested_price < 1000 OR suggested_price > 2000);
+------------------------------------
+SELECT  id,
+	name,
+        suggested_price
+FROM    product
+WHERE   name LIKE '%air' name LIKE 'air%'
+AND (suggested_price > 2000 OR suggested_price < 1000);
+-------------------------------------
+SELECT  id,
+	name,
+	suggested_price
+FROM 	product
+WHERE 	(name LIKE '%air' AND suggested_price > 2000)
+AND 	(name LIKE 'air%' AND suggested_price < 1000);
+--------------------------------------
+SELECT  id   		AS 'ID',
+	name 		AS 'IMIĘ',
+	suggested_price AS 'PROPONOWANA CENA'
+FROM 	product
+WHERE 	NOT (suggested_price >= 1000 AND suggested_price <= 2000);
+-------------------------------------
+SELECT id 	        AS 'Nr zlec',
+       customer_id  AS 'Nr klienta',
+       date_ordered AS 'Data zlecenia',
+       sales_rep_id AS 'Sprzedawca',
+       total 		AS 'Wartość'
+FROM ord AS zlecenie;
+--------------------------------------
+SELECT ord.id 	        AS 'Nr zlec',
+       name  AS 'Klient',
+       date_ordered AS 'Data zlecenia',
+       sales_rep_id AS 'Sprzedawca',
+       total 		AS 'Wartość'
+FROM ord AS zlecenie, customer;
+----------------------------------------
+SELECT ord.id 	        AS 'Nr zlec',
+       customer.name  AS 'Klient',
+       ord.date_ordered AS 'Data zlecenia',
+       ord.sales_rep_id AS 'Sprzedawca',
+       ord.total 		AS 'Wartość'
+FROM ord AS zlecenie, customer;
+-----------------------------------------
+SELECT  id,
+	customer_id,
+	date_ordered,
+	sales_rep_id,
+	total
+FROM ord;
+-----------------------------------------
+SELECT  id		AS 'Nr zlec.',
+	name		AS 'Klient',
+	date_ordered	AS 'Data zlec.',
+	sales_rep_id	AS 'Sprzedawca',
+	total		AS 'Wartość'
+FROM ord;
+----------------------------------------
+SELECT  ord.id			AS 'Nr zlec.',
+	customer.name		AS 'Klient',
+	ord.date_ordered	AS 'Data zlec.',
+	ord.sales_rep_id	AS 'Sprzedawca',
+	ord.total		AS 'Wartość'
+  FROM 	ord, customer
+ WHERE  ord.customer_id = customer.id;
+----------------------------------------
+SELECT  ord.id			AS 'Nr zlec.',
+	customer.name		AS 'Klient',
+	ord.date_ordered	AS 'Data zlec.',
+	emp.last_name		AS 'Sprzedawca',
+	ord.total		AS 'Wartość'
+  FROM 	ord, customer, emp
+ WHERE  ord.customer_id = customer.id
+   AND	ord.sales_rep_id = emp.id;
+-----------------------------------------
+SELECT  ord.id			AS 'Nr zlec.',
+	customer.name		AS 'Klient',
+	ord.date_ordered	AS 'Data zlec.',
+	emp.last_name		AS 'Sprzedawca',
+	ord.total		AS 'Wartość',
+	item.item_id		AS 'lp.',
+	item.product_id		AS 'Nr proc.',
+	item.price		AS 'cena',
+	item.quantity		AS 'ilość'
+  FROM 	ord, customer, emp, item
+ WHERE  ord.customer_id = customer.id
+   AND	ord.sales_rep_id = emp.id
+   AND  item.ord_id = ord.id;
+-----------------------------------------
+SELECT  customer.id 		AS 'Nr klienta',
+	customer.name 		AS 'Imię',
+	emp.last_name 	AS 'Nazwisko sprzed'
+FROM 	customer, emp
+WHERE 	customer.contact._id = emp.id
+AND	customer.country = Poland			ŹLE
+---------------------------------------
+SELECT  customer.id 		AS 'ID',
+        customer.name       AS 'Nazw klienta',
+        customer.city		AS 'Miasto klienta',
+        region.name			AS 'region klienta',
+        emp.last_name		AS 'Nazw opiekuna'
+FROM	customer INNER JOIN region ON region.id = customer.region_id
+				 INNER JOIN emp    ON emp.id = customer.contact_id
+WHERE   customer.last_name LIKE 'N%' OR customer.last_name LIKE 'P%';
+-----------------------------------------------------------------------------

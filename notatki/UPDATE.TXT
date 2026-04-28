@@ -1,0 +1,42 @@
+1. Produkty "Ace Ski Pole" usunąć z magazynów w Europie.	
+2. Magazyny z Ameryki Pn przenieść do Chin.	
+3. Wszystkim pracownikom podległym Marcie Havel (id=10) przyznać podwyżkę 5%	
+4. Wszystkim warehouse managerom przyznać podwyżkę 5%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

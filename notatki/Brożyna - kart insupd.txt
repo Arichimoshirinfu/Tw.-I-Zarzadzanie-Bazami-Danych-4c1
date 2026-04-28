@@ -1,0 +1,23 @@
+2.  a. Zarejestrować w Opatowie 2 nowych klienów przydzielając im opiekuna Sylwestra Stallone.
+
+INSERT
+  INTO    customer
+VALUES    (null, 'Epikm', null, '720056891', 'Mickiewicza 25', 'Opatów', null, 'Poland',
+	  45-607, 'GOOD', 225, 55, 0192837466, null, null, 'epikm@gmail.com', null, 'M', null, null),
+          (null, 'Epikm', null, '720056892', 'Mickiewicza 25', 'Opatów', null, 'Poland',
+	  45-607, 'EXCELLENT', 225, 55, 0192837466, null, null, 'epikm@gmail.com', null, 'M', null, null);
+
+    b. Wszystkim klientom z Opatowa zmianić opiekuna na Martę Havel
+
+SELECT  customer.city       AS 'Miasto',
+	customer.contact_id AS 'ID opiekuna',
+        emp.last_name       AS 'Nazwisko pracownika',
+        emp.first_name      AS 'Imię pracownika'
+ FROM   customer INNER JOIN emp ON customer.contact_id = emp.id
+WHERE   customer.city = 'Opatów';
+
+UPDATE customer
+   SET customer.contact_id =   (SELECT emp.id
+				  FROM emp
+				 WHERE emp.first_name = 'Marta' AND emp.last_name = 'Havel')
+ WHERE customer.city = 'Opatów';

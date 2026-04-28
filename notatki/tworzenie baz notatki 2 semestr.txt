@@ -1,0 +1,116 @@
+A. Wyświetl ID, nazwisko i imię pracowników "Jan Nowak" urodzony w 1999 roku i "Adam Kowalski" urodzony w 1997 roku.
+
+SELECT  id 		AS 'ID',
+	last_name 	AS 'Nazwisko',
+	first_name  	AS 'Imie'
+ FROM 	emp
+WHERE   (last_name = 'Nowak' AND first_name = 'Jan' AND year(birth_date)=1999)
+   OR   (last_name = 'Kowalski' AND first_name = 'Adam' AND year(birth_date)=1997)
+---------------------------------------------------------------------------------
+B. Podaj id, miasto i kraj dla wszystkich magazynów z Europy
+
+SELECT 	warehouse.id 		AS 'ID',
+	warehouse.city 		AS 'Miasto',
+ 	warehouse.country	AS 'Kraj'
+  FROM  warehouse INNER JOIN region ON warehouse.region_id = region.id
+ WHERE  region.name LIKE '%Europe%';
+------------------------------------------------------------------------------
+C. Wyświetl  (baza_testowa):
+	id klienta, 
+	nazwa klienta, 
+        miasto klienta, 
+	nazwa regionu klienta, 
+	nazwisko opiekuna klienta	
+       dla klientów z Kielc, o nazwie na literę 'N';
+
+SELECT  customer.id 	AS 'ID',
+	customer.name	AS 'nazwa',
+	customer.city	AS 'miasto',
+	region.name	AS 'nazwa regionu',
+	emp.last_name 	AS 'Nazwisko opiekuna'
+ FROM 	emp      INNER JOIN customer 	   ON emp.id = customer.contact_id
+		 INNER JOIN region	   ON region.id = customer.region_id
+WHERE customer.city LIKE '%Kielce%' AND customer.name LIKE 'N%';
+----------------------------------------------------------------------------------
+SELECT  osoby.id,
+		osoby.nazwisko,
+        osoby.imie,
+        adresy.ulica,
+        adresy.miasto,
+        adresy.kod_pocz
+  FROM	osoby INNER JOIN adresy ON adresy.osoby_id = osoby.id;
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+SELECT  osoby.id,
+		osoby.nazwisko,
+        osoby.imie,
+        adresy.ulica,
+        adresy.miasto,
+        adresy.kod_pocz
+  FROM	osoby LEFT OUTER JOIN adresy ON adresy.osoby_id = osoby.id;
+----------------------------------------------------------------------------------
+SELECT  osoby.id,
+		osoby.nazwisko,
+        osoby.imie,
+        adresy.ulica,
+        adresy.miasto,
+        adresy.kod_pocz
+  FROM	osoby LEFT OUTER JOIN adresy ON adresy.osoby_id = osoby.id
+  UNION
+  SELECT  osoby.id,
+		osoby.nazwisko,
+        osoby.imie,
+        adresy.ulica,
+        adresy.miasto,
+        adresy.kod_pocz
+  FROM	osoby RIGHT OUTER JOIN adresy ON adresy.osoby_id = osoby.id;
+
+
+---------------------------------------=-=-=-=-=-=INSERT=-=-=-=-=---------------------------------------------
+
+
+INSERT INTO EMP
+	(id, last_name, first_name, birth_date, manager_id,
+	dept_id, title, pesel, gender, city, zip_code, country, education, salary)
+VALUES 	(null, 'Jabłoński', 'Maciej', '2001-05-17', 9, 58, 'Warehouse Manager', 10927583957, 'M', 'Kielce', 25-644, 'Polska', 'wyższe', null);
+------------------------------------------------------------------------------------
+INSERT INTO EMP
+	(id, last_name, first_name, birth_date, manager_id,
+	dept_id, title, pesel, gender, city, zip_code, country, education, salary)
+VALUES 	(null, 'Jabłoński', 'Maciej', '2001-05-17', 9, 58, 'Warehouse Manager', 10927583957, 'M', 'Kielce', 25-644, 'Polska', 'wyższe', null),
+		(null, 'Koko', 'Choco', '1992-01-30', 10, 57, 'Singer', 31415925247, 'K', 'Chełmce', 67-969, 'Niemcy', 'podstawowe', null);
+------------------------------------------------------------------------------------------------------------------------
+INSERT INTO `inventory`
+		(`product_id`, `warehouse_id`, `amount_in_stock`, `reorder_point`, `max_in_stock`, `out_of_stock_explanation`, 			`restock_date`) 
+VALUES ('10021', '777','1','25','1000','null','null'),
+	   ('10011','777','400','300','500','null','null');
+
+
+----------------------------------------------------------=-=-=-=UPDATE=-=-=-=-------------------------------------------------------------
+
+
+UPDATE emp
+   SET emp.salary = emp.salary + 100
+ WHERE emp.id = 10;
+------------------------------------------------------
+UPDATE emp
+   SET emp.salary = emp.salary + 100,
+       emp.comments = 'podwyżka'
+ WHERE emp.id = 10;
+--------------------------------------------
+SELECT  emp.id,
+	emp.last_name,
+	emp.first_name,
+	warehouse.manager_id
+  FROM  warehouse INNER JOIN emp ON warehouse.manager_id = emp.id
+
+UPDATE warehouse INNER JOIN emp ON warehouse.manager_id = emp.id
+SET    emp.salary = emp.salary * 1.05;
+-----------------------------------------------------------------------------------
+SELECT  emp.title AS 'Tytuł',
+	MIN(salary),
+	MAX(salary),
+	ROUND(AVG(salary), 2),
+	SUM(salary),
+	COUNT(salary)
+  FROM emp
+ GROUP BY emp.title;

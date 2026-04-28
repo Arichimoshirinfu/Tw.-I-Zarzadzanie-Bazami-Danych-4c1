@@ -1,0 +1,27 @@
+Nasz manager chce się dowiedzieć, jaki zysk dla firmy generują poszczególni klienci.
+NIE posługując się danymi z pola ord.total, wyświetl nazwy klientów oraz informacje 
+o złożonych przez nich zleceniach w układzie:
+"Klient"	"ID zlecenia"	"Data zlecenia"	"Suma zamówienia"
+Data powinna być wyświetlona w formacie "YYYY-MM-DD" (bez czasu)
+Wyświetl powyższe dane tylko dla zleceń o sumie powyżej 15000.
+
+SELECT  ord.customer_id  	        AS  'id klienta',
+	customer.name 	 	        AS  'nazwa klienta',
+	ord.id 		 	        AS  'id zlecenia',
+	ord.date_ordered 	        AS 'data zlecenia',
+	SUM(item.price * item.quantity) AS 'Suma zlecenia '
+FROM    ord INNER JOIN customer    ON customer.id = ord.customer_id
+	    INNER JOIN item 	   ON ord.id = item.ord_id
+GROUP BY item.ord_id
+HAVING SUM(item.price * item.quantity) > 15000
+
+
+-=-=-=-=-------------------------------------=--=-=-=-
+
+SELECT  prac.id 					AS 'id',
+	CONCAT(prac.last_name, ' ', prac.first_name) 	AS 'pracownik',
+	IFNULL(prac.manager_id, 'BRAK DANYCH')		AS 'szef',
+	IFNULL(szef.first_name, 'BRAK DANYCH') 		AS 'Imie szefa',
+	IFNULL(szef.last_name, 'BRAK DANYCH') 		AS 'Nazwisko szefa',
+	DATE_FORMAT(prac.start_date, '%y-%m-%d')	AS 'Data zatrudnienia'
+FROM emp AS prac INNER JOIN emp AS szef ON prac.manager_id = szef.id;

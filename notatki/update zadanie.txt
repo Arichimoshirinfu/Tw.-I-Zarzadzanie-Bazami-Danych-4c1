@@ -1,0 +1,23 @@
+1. Produkty "Ace Ski Pole" usunąć z magazynów w Europie.
+
+SELECT  inventory.product_id,
+	inventory.warehouse_id,
+	inventory.amount_in_stock,
+	region.name,
+	product.name,
+	warehouse.city
+FROM	inventory INNER JOIN product ON inventory.product_id = product.id
+		  INNER JOIN warehouse ON inventory.warehouse_id = warehouse.id
+		  INNER JOIN region ON warehouse.region_id = region.id
+WHERE 	product.name='Ace Ski Pole'
+AND	region.name LIKE '%Europe%';
+-     -      -        -        -          -          -          -           -           -         -          -
+UPDATE inventory INNER JOIN product ON inventory.product_id = product.id
+		  INNER JOIN warehouse ON inventory.warehouse_id = warehouse.id
+		  INNER JOIN region ON warehouse.region_id = region.id
+   SET inventory.amount_in_stock = 0
+WHERE 	product.name='Ace Ski Pole'
+AND	region.name LIKE '%Europe%';
+
+2. Magazyny na Antarktydzie  przenieść do Chin.
+3. Wszystkim pracownikom podległym Marcie Havel przyznać podwyżkę 5%
