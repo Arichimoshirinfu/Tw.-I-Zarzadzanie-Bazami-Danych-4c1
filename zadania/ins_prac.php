@@ -58,16 +58,87 @@
 	}
 
         
-	if ($ok_man==0) {
-	    echo 'Nie ma pracownika o numerze "' . $mid . '" - wybierz innego z bazy.';
+	    ##### MANAGER #####
+    $sql_man = "SELECT id, first_name, last_name
+              FROM emp;";
+
+    $wyn_man = mysqli_query($id_conn, $sql_man);
+
+        if (mysqli_errno($id_conn))
+        {
+            echo "Błąd w zapytaniu o managerów: " . $baza .
+                ' (' . mysqli_error($id_conn) . ')';
             mysqli_close($id_conn);
-            exit;   
-	}
+            exit;
+        }
+
+    $ok_man = 0;
+    $managers = '';
+
+    while($w_man = mysqli_fetch_array($wyn_man))
+    {
+        if ($w_man['id'] == $mid)
+        {
+            $ok_man = 1;
+        }
+
+        $managers .= ', <br> - ID: ' . $w_man['id'] .
+                    ' (' . $w_man['first_name'] . ' ' .
+                    $w_man['last_name'] . ')';
+    }
+
+    if ($ok_man == 0)
+    {
+        echo 'Nie ma pracownika o numerze "' . $mid .
+            '", wybierz jednego z poniższych:';
+        echo '<br>' . substr($managers, 6);
+        mysqli_close($id_conn);
+        exit;
+    }
+
+        ##### DEPARTAMENT #####
+    $sql_dep = "SELECT id, name FROM dept;";
+
+    $wyn_dep = mysqli_query($id_conn, $sql_dep);
+
+    if (mysqli_errno($id_conn))
+    {
+        echo "Błąd w zapytaniu o departamenty: " . $baza .
+            ' (' . mysqli_error($id_conn) . ')';
+        mysqli_close($id_conn);
+        exit;
+    }
+
+    $ok_dep = 0;
+    $departments = '';
+
+    while($w_dep = mysqli_fetch_array($wyn_dep))
+    {
+        if ($w_dep['id'] == $did)
+        {
+            $ok_dep = 1;
+        }
+
+        $departments .= ', <br> - ID: ' . $w_dep['id'] .
+                        ' (' . $w_dep['name'] . ')';
+    }
+
+    if ($ok_dep == 0)
+    {
+        echo 'Nie ma departamentu o numerze "' . $did .
+            '", wybierz jeden z poniższych:';
+        echo '<br>' . substr($departments, 6);
+        mysqli_close($id_conn);
+        exit;
+    }
+
+    #####WIDEŁKI######
 
         $sql_wid = "SELECT job.salary_min, 
                            job.salary_max
                       FROM job
                      WHERE job.name = '$tit';";
+
 
 	$wyn_wid = mysqli_query($id_conn, $sql_wid);
 	if (mysqli_errno($id_conn)) 
